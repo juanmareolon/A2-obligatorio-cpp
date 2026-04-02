@@ -1,0 +1,5 @@
+--BORRAR ANTES DE ENTREGAR--
+
+g++ -std=c++11 -o ejemplo ejercicio1.cpp
+./ejemplo < ../A2-obligatorio-2026-S1-letra/tests/ejercicio1/1000000.in.txt > 1000000.own.txt   #Esto es si estan las dos carpetas separadas
+diff --strip-trailing-cr 1000000.own.txt ../A2-obligatorio-2026-S1-letra/tests/ejercicio1/1000000.out.txt
