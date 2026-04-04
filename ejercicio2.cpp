@@ -82,21 +82,3 @@ int main()
     return 0;
 }
 
-//maxPuntos: 100
-//maxnombreAlumno: luis
-//segundonombreAlumno : ana
-
-//Que pasa si se tiene que flotar un tercero
-// ana 100
-// luis 100
-// martin 100
-// ana -50
-// luis -20
-
-// Caso de flotar tercero, pero el segundo se queda con el mismo puntaje
-// ana 100
-// luis 100
-// martin 80
-// lucas 80
-// martin -50
-// luis  -100
