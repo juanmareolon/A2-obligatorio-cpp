@@ -27,7 +27,7 @@ private:
     int pos(K key, unsigned int i)
     {
         // hash cerrado cuadratico, se puede cambiar a lineal o doble hashing
-        return abs(hashFunction(key) + i*i) % buckets;
+        return abs(hashFunction(key) + i* hashFunction(key)) % buckets;
     }
 
 
