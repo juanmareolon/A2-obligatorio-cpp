@@ -2,11 +2,101 @@
 #include <string>
 #include <iostream>
 #include <limits>
-
+#include "tads/HashTable.h"
+#include "tads/List.h"
+#include "tads/ClosedHashTableImp.cpp"
+#include "tads/ListImp.cpp"
 using namespace std;
+
+struct Alumno {
+    string nombre;
+    int puntos;
+    Alumno(string nombre, int puntos) : nombre(nombre), puntos(puntos) {}
+
+    bool operator==(Alumno a) {
+        return nombre == a.nombre && puntos == a.puntos;
+    }
+};
+
+int hash3(string key) { //Funcion hash para strings, es la misma utilizada en clase.
+  int h = 0;
+  for (int i = 0; i < key.length(); i++)
+    h = 31 * h + int(key[i]);
+  return h;
+}
 
 int main()
 {
-    // TODO
+    int cantidad;
+    cin >> cantidad;
+    List<Alumno>* listaAlumnos = new ListImp<Alumno>();
+    HashTable<string, int>* tablaPuntajes = new ClosedHashTableImp<string, int>(cantidad, hash3);
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        string nombre;
+        int puntos;
+        cin >> nombre >> puntos;
+        listaAlumnos->insert(Alumno(nombre, puntos));
+
+        if (tablaPuntajes->exists(nombre)) {
+            int puntajeActual = tablaPuntajes->get(nombre);
+            tablaPuntajes->insert(nombre, puntajeActual + puntos);
+        } else {
+            tablaPuntajes->insert(nombre, puntos);
+        }
+    }
+
+    int maxFinal = numeric_limits<int>::min(); // Funciona como en java Integer.MIN_VALUE
+    for (int i = 0; i < listaAlumnos->getSize(); i++) {
+        Alumno unAlumno = listaAlumnos->get(i);
+        int total = tablaPuntajes->get(unAlumno.nombre);
+        if (total > maxFinal) {
+            maxFinal = total;
+        }
+    }
+
+    // Aca necesitamos acumular los puntos de cada alumno en orden, para ver quien fue el primero en llegar a maxFinal
+    HashTable<string, int>* tablaAcumulados = new ClosedHashTableImp<string, int>(cantidad, hash3);
+    string ganador = "";
+    for (int i = 0; i < listaAlumnos->getSize(); i++)
+    {
+        Alumno unAlumno = listaAlumnos->get(i);
+        int puntajeAcumulado;
+        if (tablaAcumulados->exists(unAlumno.nombre)) {
+            puntajeAcumulado = tablaAcumulados->get(unAlumno.nombre) + unAlumno.puntos;
+        } else {
+            puntajeAcumulado = unAlumno.puntos;
+        }
+        tablaAcumulados->insert(unAlumno.nombre, puntajeAcumulado);
+
+        if (puntajeAcumulado == maxFinal && tablaPuntajes->get(unAlumno.nombre) == maxFinal) { // Verifico que el maxFinal sea el mismo que el total final del alumno
+            ganador = unAlumno.nombre;
+            break;
+        }
+    }
+    cout << ganador << endl;
+    delete listaAlumnos;
+    delete tablaPuntajes;
+    delete tablaAcumulados;
     return 0;
 }
+
+//maxPuntos: 100
+//maxnombreAlumno: luis
+//segundonombreAlumno : ana
+
+//Que pasa si se tiene que flotar un tercero
+// ana 100
+// luis 100
+// martin 100
+// ana -50
+// luis -20
+
+// Caso de flotar tercero, pero el segundo se queda con el mismo puntaje
+// ana 100
+// luis 100
+// martin 80
+// lucas 80
+// martin -50
+// luis  -100
