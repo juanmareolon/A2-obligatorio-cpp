@@ -32,6 +32,8 @@ public:
     // pre: -
     // post: returns the size of the list
     virtual int getSize() = 0;
+
+    virtual ~List() {}
 };
 
 #endif

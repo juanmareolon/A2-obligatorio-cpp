@@ -3,6 +3,7 @@
 #include "HashTable.h"
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 
 template <class K, class V>
 struct KeyValue {
@@ -21,13 +22,14 @@ private:
     int N; //Elementos en la tabla
     int size;
     int (*hashFunction)(K);
+    int (*hashFunction2)(K);
     KeyValue<K,V> **table;
     bool *eliminado;
 
     int pos(K key, unsigned int i)
     {
-        // hash cerrado cuadratico, se puede cambiar a lineal o doble hashing
-        return abs(hashFunction(key) + i* hashFunction(key)) % buckets;
+        // doble hashing
+        return std::abs((int)(hashFunction(key) + i * hashFunction2(key))) % buckets;
     }
 
 
@@ -68,11 +70,12 @@ private:
 
 public:
     
-    ClosedHashTableImp(int _B, int (*_hashFunction)(K))
+    ClosedHashTableImp(int _B, int (*_hashFunction)(K), int (*_hashFunction2)(K))
     {
         buckets = _B;
         N = 0;
         hashFunction = _hashFunction;
+        hashFunction2 = _hashFunction2;
         table = new KeyValue<K,V>*[buckets]();
         for (int i = 0; i < buckets; i++)
         {
@@ -85,29 +88,29 @@ public:
     void insert(K key, V value)
     {
         assert(N < buckets);
-        bool actualice = false;
         int intento = 0;
-        while(!actualice) {
+        while (intento < buckets) {
             int p = pos(key, intento);
-            if(table[p] == NULL) {
-                if(!eliminado[p]) {
-                    table[p] = new KeyValue<K,V>(key, value);
-                    N++;
-                    actualice = true;
+            if (table[p] == NULL || eliminado[p]) {
+                if (table[p] != NULL) {
+                    delete table[p]; // limpiar si había basura
                 }
-            } else {
-                if(!eliminado[p] && table[p]->key == key) {
-                    table[p]->value = value;
-                    actualice = true;
-                }
+                table[p] = new KeyValue<K,V>(key, value);
+                eliminado[p] = false;
+                N++;
+                return;
+            }
+            if (!eliminado[p] && table[p]->key == key) {
+                table[p]->value = value;
+                return;
             }
             intento++;
-            assert(intento < buckets);
         }
-
         if(this->getLoadFactor() >= 0.7) {
             this->rehash();
         }
+        assert(false); 
+
     }
 
     V get(K key)

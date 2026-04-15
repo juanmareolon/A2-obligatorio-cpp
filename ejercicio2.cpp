@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <limits>
+#include <cstdlib>
 #include "tads/HashTable.h"
 #include "tads/List.h"
 #include "tads/ClosedHashTableImp.cpp"
@@ -18,6 +19,14 @@ struct Alumno {
     }
 };
 
+int hash2(string key) {
+    int h = 0;
+    for (int i = 0; i < key.length(); i++) {
+        h = (h * 131) + key[i];
+    }
+    return (h << 1) | 1; // asegura que sea impar (clave para doble hashing)
+}
+
 int hash3(string key) { //Funcion hash para strings, es la misma utilizada en clase.
   int h = 0;
   for (int i = 0; i < key.length(); i++)
@@ -30,7 +39,7 @@ int main()
     int cantidad;
     cin >> cantidad;
     List<Alumno>* listaAlumnos = new ListImp<Alumno>();
-    HashTable<string, int>* tablaPuntajes = new ClosedHashTableImp<string, int>(cantidad, hash3);
+    HashTable<string, int>* tablaPuntajes = new ClosedHashTableImp<string, int>(cantidad, hash3, hash2);
 
     for (int i = 0; i < cantidad; i++)
     {
@@ -57,7 +66,7 @@ int main()
     }
 
     // Aca necesitamos acumular los puntos de cada alumno en orden, para ver quien fue el primero en llegar a maxFinal
-    HashTable<string, int>* tablaAcumulados = new ClosedHashTableImp<string, int>(cantidad, hash3);
+    HashTable<string, int>* tablaAcumulados = new ClosedHashTableImp<string, int>(cantidad, hash3, hash2);
     string ganador = "";
     for (int i = 0; i < listaAlumnos->getSize(); i++)
     {

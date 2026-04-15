@@ -29,5 +29,7 @@ public:
     // post: returns the number of elements in the table
     virtual int getSize() = 0;
 
+    virtual ~HashTable() {}
+
 };
 #endif
