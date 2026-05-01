@@ -85,33 +85,64 @@ public:
     }
     
    
-    void insert(K key, V value)
-    {
-        assert(N < buckets);
-        int intento = 0;
-        while (intento < buckets) {
-            int p = pos(key, intento);
-            if (table[p] == NULL || eliminado[p]) {
-                if (table[p] != NULL) {
-                    delete table[p]; // limpiar si había basura
-                }
-                table[p] = new KeyValue<K,V>(key, value);
-                eliminado[p] = false;
-                N++;
-                return;
-            }
-            if (!eliminado[p] && table[p]->key == key) {
-                table[p]->value = value;
-                return;
-            }
-            intento++;
-        }
-        if(this->getLoadFactor() >= 0.7) {
-            this->rehash();
-        }
-        assert(false); 
+    // void insert(K key, V value)
+    // {
+    //     assert(N < buckets);
+    //     int intento = 0;
+    //     while (intento < buckets) {
+    //         int p = pos(key, intento);
+    //         if (table[p] == NULL || eliminado[p]) {
+    //             if (table[p] != NULL) {
+    //                 delete table[p]; // limpiar si había basura
+    //             }
+    //             table[p] = new KeyValue<K,V>(key, value);
+    //             eliminado[p] = false;
+    //             N++;
+    //             return;
+    //         }
+    //         if (!eliminado[p] && table[p]->key == key) {
+    //             table[p]->value = value;
+    //             return;
+    //         }
+    //         intento++;
+    //     }
+    //     if(this->getLoadFactor() >= 0.7) {
+    //         this->rehash();
+    //     }
+    //     assert(false); 
 
+    // }
+
+    void insert(K key, V value)
+{
+    if (this->getLoadFactor() >= 0.7) {
+        this->rehash();
     }
+
+    int intento = 0;
+    while (intento < buckets) {
+        int p = pos(key, intento);
+
+        if (table[p] == NULL || eliminado[p]) {
+            if (table[p] != NULL) {
+                delete table[p];
+            }
+            table[p] = new KeyValue<K,V>(key, value);
+            eliminado[p] = false;
+            N++;
+            return;
+        }
+
+        if (!eliminado[p] && table[p]->key == key) {
+            table[p]->value = value;
+            return;
+        }
+
+        intento++;
+    }
+
+    assert(false); // esto ya no debería pasar casi nunca
+}
 
     V get(K key)
     {

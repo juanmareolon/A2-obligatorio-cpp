@@ -1,83 +1,103 @@
 #ifndef MAX_HEAP_IMP
 #define MAX_HEAP_IMP
 
-#include "MaxHeap.h"
+#include "PriorityQueue.h"
 #include <cassert>
 
 template <class T>
-class MaxHeapImp : public MaxHeap<T> {
+class MaxHeapImp : public PriorityQueue<T> 
+{
 private:
     T* arr;
-    int size;
-    int capacity;
+    int sigLibre;
+    int capacidad;
+    bool (*comp)(T, T);
 
-    bool (*comp)(T, T); // función de comparación
-
-    void swap(int i, int j) {
-        T tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+    int padre(int pos){
+        return (pos-1)/2;
     }
 
-    void subir(int i) {
-        while (i > 0) {
-            int padre = (i - 1) / 2;
-            if (comp(arr[i], arr[padre])) {
-                swap(i, padre);
-                i = padre;
-            } else break;
-        }
+    int hijoIzq(int pos){
+        return  (2*pos)+1;
     }
 
-    void bajar(int i) {
-        while (true) {
-            int izq = 2*i + 1;
-            int der = 2*i + 2;
-            int mejor = i;
-
-            if (izq < size && comp(arr[izq], arr[mejor]))
-                mejor = izq;
-
-            if (der < size && comp(arr[der], arr[mejor]))
-                mejor = der;
-
-            if (mejor != i) {
-                swap(i, mejor);
-                i = mejor;
-            } else break;
-        }
+    int hijoDer(int pos){
+        return (2*pos)+2;
     }
+
+    void intercambiar(int pos1, int pos2) {
+        T aux = arr[pos1];
+        arr[pos1] = arr[pos2];
+        arr[pos2] = aux;
+    }
+
 
 public:
     MaxHeapImp(int cap, bool (*_comp)(T, T)) {
-        capacity = cap;
-        size = 0;
+        assert(cap > 0);
+        capacidad = cap;
+        sigLibre = 0;
         arr = new T[cap];
         comp = _comp;
     }
 
-    void push(T elem) {
-        assert(size < capacity);
-        arr[size] = elem;
-        subir(size);
-        size++;
+    void flotar(int pos){
+        if (pos > 0) { 
+            int posPadre = padre (pos);
+            if (comp(arr[pos], arr[posPadre])){
+                intercambiar (pos, posPadre); 
+                flotar(posPadre);
+            }
+        }
+    }
+
+    void hundir(int pos){
+        int posHijoIzq= hijoIzq(pos) ;
+        int posHijoDer = hijoDer(pos);
+        if (posHijoIzq < sigLibre){
+            int posMenorHijo = posHijoIzq;
+            if((posHijoDer< sigLibre) && comp(arr[posHijoDer], arr[posMenorHijo])){
+                posMenorHijo = posHijoDer;
+            }
+            if(comp(arr[posMenorHijo], arr[pos])){
+                intercambiar (pos, posMenorHijo);
+                hundir (posMenorHijo);
+            }
+        }
+    }
+
+    void insertar(T elem) {
+        assert(!estaLleno());
+        arr[sigLibre] = elem;
+        flotar(sigLibre);
+        sigLibre++;
     }
 
     T pop() {
-        assert(size > 0);
+        assert(!estaVacio());
         T res = arr[0];
-        arr[0] = arr[size-1];
-        size--;
-        bajar(0);
+        arr[0] = arr[sigLibre-1];
+        sigLibre--;
+        hundir(0);
         return res;
     }
 
-    bool isEmpty() {
-        return size == 0;
+    T tope() {
+        assert(!estaVacio());
+        return arr[0];
+        
     }
 
-    int getSize() {
-        return size;
+    bool estaLleno() {
+        return sigLibre == capacidad;
+    }
+
+    bool estaVacio(){
+        return sigLibre == 0;
+    }
+
+    int obtenerTamano() {
+        return sigLibre;
     }
 
     ~MaxHeapImp() {

@@ -22,7 +22,7 @@ public:
     virtual bool exists(K key) = 0;
 
     // pre: -
-    // post: returns the load factor of the table
+    // post: returns the load factor of the table   CONSULTAR
     virtual float getLoadFactor() = 0;
 
     // pre: -

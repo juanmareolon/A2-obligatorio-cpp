@@ -1,12 +1,9 @@
-#include "tads/MaxHeap.h"
+#include "tads/PriorityQueue.h"
 #include "tads/MaxHeapImp.cpp"
 #include <iostream>
-using namespace std;
 #include <cassert>
 #include <string>
-#include <iostream>
 #include <limits>
-
 using namespace std;
 
 struct Paciente {
@@ -31,10 +28,11 @@ int main()
     int N;
     cin >> N;
 
-    MaxHeap<Paciente>* heap = new MaxHeapImp<Paciente>(N, comp);
+    PriorityQueue<Paciente>* heap = new MaxHeapImp<Paciente>(N, comp);
 
     for (int i = 0; i < N; i++) {
-        int id, urgencia;
+        int id; 
+        int urgencia;
         string horaStr;
         cin >> id >> horaStr >> urgencia;
 
@@ -44,10 +42,10 @@ int main()
         p.urgencia = urgencia;
         p.orden = i;
 
-        heap->push(p);
+        heap->insertar(p);
     }
 
-    while (!heap->isEmpty()) {
+    while (!heap->estaVacio()) {
         cout << heap->pop().id << "\n";
     }
 

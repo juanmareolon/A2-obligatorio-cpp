@@ -8,18 +8,16 @@ template <class T>
 class ListImp : public List<T>
 {
 private:
-    // define a inner class (Node) to be used by the double linked list
-    class Node
+    class NodoLista
     {
     public:
         T element;
-        Node *next;
-        Node *previous;
-        Node(T element, Node *next, Node *previous) : element(element), next(next), previous(previous) {}
+        NodoLista *next;
+        NodoLista(T element, NodoLista *next) : element(element), next(next) {}
     };
 
-    Node *head;
-    Node *tail;
+    NodoLista *head;
+    NodoLista *tail;
     int size;
 
 public:
@@ -27,16 +25,16 @@ public:
 
     void insert(T element)
     {
-        Node *newNode = new Node(element, NULL, this->tail);
+        NodoLista *newNodoLista = new NodoLista(element, NULL, this->tail);
         if (isEmpty())
         {
-            head = newNode;
-            tail = newNode;
+            head = newNodoLista;
+            tail = newNodoLista;
         }
         else
         {
-            tail->next = newNode;
-            tail = newNode;
+            tail->next = newNodoLista;
+            tail = newNodoLista;
         }
         size++;
     }
@@ -44,37 +42,37 @@ public:
     void insertAt(int index, T element)
     {
         assert(index >= 0 && index < size);
-        Node *newNode = new Node(element, NULL, NULL);
+        NodoLista *newNodoLista = new NodoLista(element, NULL, NULL);
         if (index == 0)
         {
-            newNode->next = head;
-            head->previous = newNode;
-            head = newNode;
+            newNodoLista->next = head;
+            head->previous = newNodoLista;
+            head = newNodoLista;
         }
         else if (index == size)
         {
-            tail->next = newNode;
-            newNode->previous = tail;
-            tail = newNode;
+            tail->next = newNodoLista;
+            newNodoLista->previous = tail;
+            tail = newNodoLista;
         }
         else
         {
-            Node *current = head;
+            NodoLista *current = head;
             for (int i = 0; i < index; i++)
             {
                 current = current->next;
             }
-            newNode->next = current;
-            newNode->previous = current->previous;
-            current->previous->next = newNode;
-            current->previous = newNode;
+            newNodoLista->next = current;
+            newNodoLista->previous = current->previous;
+            current->previous->next = newNodoLista;
+            current->previous = newNodoLista;
         }
         size++;
     }
 
     void remove(T element)
     {
-        Node *current = head;
+        NodoLista *current = head;
         while (current != NULL)
         {
             // note: that the elment should implement == operator
@@ -112,7 +110,7 @@ public:
     void removeAt(int index)
     {
         assert(index >= 0 && index < size);
-        Node *current = head;
+        NodoLista *current = head;
         for (int i = 0; i < index; i++)
         {
             current = current->next;
@@ -150,7 +148,7 @@ public:
     T get(int index)
     {
         assert(index >= 0 && index < size);
-        Node *current = head;
+        NodoLista *current = head;
         for (int i = 0; i < index; i++)
         {
             current = current->next;
