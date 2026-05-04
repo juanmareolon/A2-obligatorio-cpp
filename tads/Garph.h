@@ -1,8 +1,7 @@
-#include <cstddef>
-#include "ListNodeImp.cpp"
 #ifndef GRAPH_H
 #define GRAPH_H
-
+#include <cstddef>
+#include "ListNodeImp.cpp"
 struct Arista
 {
     int origen; //PRESINDIR

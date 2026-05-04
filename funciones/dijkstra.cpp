@@ -1,61 +1,63 @@
-#include "../tads/Garph.h"
-#include "../tads/PriorityQueue.h"
-#include "../tads/MaxHeapImp.cpp"
 #include <limits>
+#include "../tads/AdjacencyListImp.cpp"
+#include "../tads/MaxHeapImp.cpp"
+
 using namespace std;
 
-struct nodoHeap
-{
+struct NodoHeap {
     int vertice;
     int costo;
-    nodoHeap(){}
-    nodoHeap(int _vertice, int _costo){
-        vertice = _vertice;
-        costo = _costo; 
-    }
 };
 
-
 int const INF = std::numeric_limits<int>::max();
-bool compararFunction(nodoHeap origen, nodoHeap destino){
-    return origen.costo > destino.costo;
+
+bool compMin(NodoHeap a, NodoHeap b) {
+    return a.costo < b.costo;
 }
 
-int* dijkstra (Graph* g, int origen){
+int* dijkstra(Graph* g, int origen) {
+    
     int V = g->getV();
-    int* costos = new int[V+1]();
-    bool* visitados = new bool[V+1]();
-    int* vengo = new int [V+1]();
+    int* costos = new int[V + 1];
+    bool* visitados = new bool[V + 1];
+    int* vengo = new int[V + 1];
 
-    for (int v = 0; v <= V; v++)
-    {
-        costos[v] = INF;
-        visitados[v] = false;
-        vengo[v] = -1;
+    for (int i = 1; i <= V; i++) {
+        costos[i] = INF;
+        visitados[i] = false;
+        vengo[i] = -1;
     }
-    costos[origen] = 0;
-    PriorityQueue<nodoHeap>* heapNodos = new MaxHeapImp<nodoHeap>(V,compararFunction);
-    nodoHeap nodoInsertar = nodoHeap(origen,0);
-    heapNodos->insertar(nodoInsertar);
 
-    while(!heapNodos->estaVacio()){
-        nodoHeap aux = heapNodos->pop();
-        int vertice = aux.vertice;
-        if(visitados[vertice]) continue;
-        visitados[aux.vertice] = true;
-        NodoLista<Arista>* listaAdy = g->adyacentesA(vertice);
-        while (listaAdy != NULL)
-        {
-            int destino = listaAdy->elemento.destino;
-            int peso = listaAdy->elemento.peso;
-            if(costos[destino] > costos[vertice] + peso){
-                costos[destino] = costos[vertice] + peso;
-                vengo[destino] = vertice;
-                nodoHeap nuevo(destino, costos[destino]);
-                heapNodos->insertar(nuevo);
+    MaxHeapImp<NodoHeap> heap(V * 20, compMin); //*20 para el caso de denso
+
+    costos[origen] = 0;
+    heap.insertar({origen, 0});
+
+    while (!heap.estaVacio()) {
+        NodoHeap actual = heap.pop();
+        int u = actual.vertice;
+
+        if (visitados[u]) continue;
+        visitados[u] = true;
+
+        NodoLista<Arista>* ady = g->adyacentesA(u);
+
+        while (ady != NULL) {
+            int v = ady->elemento.destino;
+            int peso = ady->elemento.peso;
+            
+            if (!visitados[v] && costos[u] + peso < costos[v]) {
+                costos[v] = costos[u] + peso;
+                vengo[v] = u;
+                heap.insertar({v, costos[v]});
             }
-            listaAdy = listaAdy->sig;
+
+            ady = ady->sig;
         }
     }
+
+    delete[] visitados;
+    delete[] vengo;
+
     return costos;
 }
