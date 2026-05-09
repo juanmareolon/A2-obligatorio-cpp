@@ -1,9 +1,11 @@
-#include "tads/PriorityQueue.h"
-#include "tads/MaxHeapImp.cpp"
 #include <iostream>
 #include <cassert>
 #include <string>
 #include <limits>
+
+#include "tads/PriorityQueue.h"
+#include "tads/HeapImp.cpp"
+
 using namespace std;
 
 struct Paciente {
@@ -13,6 +15,7 @@ struct Paciente {
     int orden;
 };
 
+// Función comparadora para hacerlo un Max Heap
 bool comp(Paciente a, Paciente b) {
     if (a.urgencia != b.urgencia)
         return a.urgencia > b.urgencia;
@@ -28,7 +31,7 @@ int main()
     int N;
     cin >> N;
 
-    PriorityQueue<Paciente>* heap = new MaxHeapImp<Paciente>(N, comp);
+    PriorityQueue<Paciente>* heap = new HeapImp<Paciente>(N, comp);
 
     for (int i = 0; i < N; i++) {
         int id; 

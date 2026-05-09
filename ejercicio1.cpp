@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <limits>
+
 using namespace std;
 
 // Función hash para letras minúsculas, no se utiliza una tabla de hash, sino que tecnica de hashing.
@@ -12,6 +13,7 @@ using namespace std;
  int hashLetrasMay(char c){
         return (int)(c - 'A');
  }
+ 
 int main()
 {
     int* cantLlaves = new int[26]();

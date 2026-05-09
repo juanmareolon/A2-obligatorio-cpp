@@ -5,7 +5,7 @@ template <class T>
 class List
 {
 public:
-    // pre:
+    // pre: -
     // post: the element is inserted at the end of the list
     virtual void insert(T element) = 0;
 

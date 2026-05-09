@@ -3,8 +3,10 @@
 #include <iostream>
 #include <limits>
 #include <cstdlib>
+
 #include "tads/HashTable.h"
 #include "tads/ClosedHashTableImp.cpp"
+
 #include "funciones/hashFn.cpp"
 
 using namespace std;

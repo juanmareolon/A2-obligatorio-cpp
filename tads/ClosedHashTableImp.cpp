@@ -1,6 +1,8 @@
 #ifndef HASH_TABLE_IMP
 #define HASH_TABLE_IMP
+
 #include "HashTable.h"
+
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -141,7 +143,7 @@ public:
         intento++;
     }
 
-    assert(false); // esto ya no debería pasar casi nunca
+    assert(false);
 }
 
     V get(K key)
@@ -204,4 +206,5 @@ public:
         }
 };
 };
+
 #endif

@@ -2,6 +2,7 @@
 #define LIST_IMP
 
 #include "List.h"
+
 #include <cassert>
 
 template <class T>

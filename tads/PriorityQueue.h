@@ -1,5 +1,5 @@
-#ifndef MAX_HEAP_H
-#define MAX_HEAP_H
+#ifndef PRIORITY_QUEUE_H
+#define PRIORITY_QUEUE_H
 
 template <class T>
 class PriorityQueue

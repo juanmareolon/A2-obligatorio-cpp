@@ -5,7 +5,7 @@ template <class K, class V>
 class HashTable
 {
 public:
-    // pre:
+    // pre: -
     // post: the element and its value is inserted to the table
     virtual void insert(K key, V value) = 0;
 
@@ -13,7 +13,7 @@ public:
     // post: remove the value of the element that is equal to the given key
     virtual void remove(K key) = 0;
 
-    // pre: 
+    // pre: -
     // post: returns the value at the given key
     virtual V get(K key) = 0;
 
@@ -32,4 +32,5 @@ public:
     virtual ~HashTable() {}
 
 };
+
 #endif

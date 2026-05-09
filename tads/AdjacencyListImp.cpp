@@ -1,6 +1,8 @@
-#ifndef ADJACENCY_LIST
-#define ADJACENCY_LIST
+#ifndef ADJACENCY_LIST_IMP
+#define ADJACENCY_LIST_IMP
+
 #include <cassert>
+
 #include "List.h"
 #include "ListImp.cpp"
 #include "Garph.h"

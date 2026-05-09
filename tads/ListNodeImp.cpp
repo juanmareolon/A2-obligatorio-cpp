@@ -1,5 +1,6 @@
-#ifndef LISTNODE
-#define LISTNODE
+#ifndef LIST_NODE_IMP
+#define LIST_NODE_IMP
+
 template <class T>
 struct NodoLista{
     T elemento;

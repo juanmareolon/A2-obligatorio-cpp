@@ -1,11 +1,14 @@
-#ifndef MAX_HEAP_IMP
-#define MAX_HEAP_IMP
+// Lo llamamos así para dejarlo como implementación genérica de un Heap, ya que 
+// necesitamos a lo largo del código usarlo tanto como Max Heap y Min Heap
+#ifndef HEAP_IMP
+#define HEAP_IMP
 
 #include "PriorityQueue.h"
+
 #include <cassert>
 
 template <class T>
-class MaxHeapImp : public PriorityQueue<T> 
+class HeapImp : public PriorityQueue<T> 
 {
 private:
     T* arr;
@@ -33,7 +36,7 @@ private:
 
 
 public:
-    MaxHeapImp(int cap, bool (*_comp)(T, T)) {
+    HeapImp(int cap, bool (*_comp)(T, T)) {
         assert(cap > 0);
         capacidad = cap;
         sigLibre = 0;
@@ -100,7 +103,7 @@ public:
         return sigLibre;
     }
 
-    ~MaxHeapImp() {
+    ~HeapImp() {
         delete[] arr;
     }
 };

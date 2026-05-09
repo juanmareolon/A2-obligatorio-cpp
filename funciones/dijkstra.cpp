@@ -1,6 +1,8 @@
 #include <limits>
+#include <cmath>
+
 #include "../tads/AdjacencyListImp.cpp"
-#include "../tads/MaxHeapImp.cpp"
+#include "../tads/HeapImp.cpp"
 
 using namespace std;
 
@@ -11,6 +13,7 @@ struct NodoHeap {
 
 int const INF = std::numeric_limits<int>::max();
 
+// Función comparadora para hacerlo un Min Heap
 bool compMin(NodoHeap a, NodoHeap b) {
     return a.costo < b.costo;
 }
@@ -28,7 +31,7 @@ int* dijkstra(Graph* g, int origen) {
         vengo[i] = -1;
     }
 
-    MaxHeapImp<NodoHeap> heap(V * 20, compMin); //*20 para el caso de denso
+    HeapImp<NodoHeap> heap(std::pow(V, 2), compMin); //V^2 para el caso de denso
 
     costos[origen] = 0;
     heap.insertar({origen, 0});
