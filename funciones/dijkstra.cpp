@@ -1,5 +1,4 @@
 #include <limits>
-#include <cmath>
 
 #include "../tads/AdjacencyListImp.cpp"
 #include "../tads/HeapImp.cpp"
@@ -19,8 +18,8 @@ bool compMin(NodoHeap a, NodoHeap b) {
 }
 
 int* dijkstra(Graph* g, int origen) {
-    
     int V = g->getV();
+    int A = g->getA();
     int* costos = new int[V + 1];
     bool* visitados = new bool[V + 1];
     int* vengo = new int[V + 1];
@@ -31,7 +30,7 @@ int* dijkstra(Graph* g, int origen) {
         vengo[i] = -1;
     }
 
-    HeapImp<NodoHeap> heap(std::pow(V, 2), compMin); //V^2 para el caso de denso
+    HeapImp<NodoHeap> heap(V+A, compMin); //V+A para el caso de denso
 
     costos[origen] = 0;
     heap.insertar({origen, 0});

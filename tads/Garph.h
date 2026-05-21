@@ -35,6 +35,8 @@ public:
     //pre: -
     //post: Returns the number of edges in the graph.
     virtual int getA() = 0;
+
+    virtual ~Graph() {} 
 };
 
 #endif

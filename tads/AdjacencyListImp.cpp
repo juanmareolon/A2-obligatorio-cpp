@@ -3,8 +3,7 @@
 
 #include <cassert>
 
-#include "List.h"
-#include "ListImp.cpp"
+#include "ListNodeImp.cpp"
 #include "Garph.h"
 
 class AdjacencyList : public Graph

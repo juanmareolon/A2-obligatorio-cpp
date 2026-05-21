@@ -1,8 +1,8 @@
 --BORRAR ANTES DE ENTREGAR--
 
 g++ -std=c++11 -o ejemplo ejercicio1.cpp
-./ejemplo < ../A2-obligatorio-2026-S1-letra/tests/ejercicio1/1000000.in.txt > 1000000.own.txt   #Esto es si estan las dos carpetas separadas
-diff --strip-trailing-cr 1000000.own.txt ../A2-obligatorio-2026-S1-letra/tests/ejercicio1/1000000.out.txt
+./ejemplo5 < ../A2-obligatorio-2026-S1-letra/tests/ejercicio5/arbol.in.txt > arbol.own.txt
+diff --strip-trailing-cr arbol.own.txt ../A2-obligatorio-2026-S1-letra/tests/ejercicio1/arbol.out.txt
 
 para probar todo de una
 for input in ../A2-obligatorio-2026-S1-letra/tests/ejercicio2/*.in.txt; do

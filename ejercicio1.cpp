@@ -6,14 +6,14 @@
 using namespace std;
 
 // Función hash para letras minúsculas, no se utiliza una tabla de hash, sino que tecnica de hashing.
- int hashLetrasMin(char c) {
-        return (int)(c - 'a');
-    }
+int hashLetrasMin(char c) {
+   return (int)(c - 'a');
+}
 
- int hashLetrasMay(char c){
-        return (int)(c - 'A');
- }
- 
+int hashLetrasMay(char c){
+    return (int)(c - 'A');
+}
+
 int main()
 {
     int* cantLlaves = new int[26]();
