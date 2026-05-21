@@ -15,3 +15,26 @@ for input in ../A2-obligatorio-2026-S1-letra/tests/ejercicio2/*.in.txt; do
         echo "FALLO: $input"
     fi
 done
+
+prueba y da el tiempo
+for input in ../A2-obligatorio-2026-S1-letra/tests/ejercicio4/*.in.txt; do
+    expected="${input%.in.txt}.out.txt"
+
+    echo "Ejecutando: $input"
+
+    inicio=$(date +%s.%N)
+
+    ./ejemplo4 < "$input" > /tmp/salida.txt
+
+    fin=$(date +%s.%N)
+
+    tiempo=$(echo "$fin - $inicio" | bc)
+
+    if diff --strip-trailing-cr /tmp/salida.txt "$expected" > /dev/null 2>&1; then
+        echo "OK - Tiempo: ${tiempo} segundos"
+    else
+        echo "FALLO - Tiempo: ${tiempo} segundos"
+    fi
+
+    echo ""
+done

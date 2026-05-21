@@ -34,17 +34,15 @@ public:
             lista = nuevo;
         } else {
             Nodo<T>* aux = lista;
-
             while (aux->sig != NULL) {
                 aux = aux->sig;
             }
-
             aux->sig = nuevo;
         }
     }
 
     T desencolar() {
-        if (lista == NULL) throw std::runtime_error("La cola esta vacia");
+        assert(lista != NULL);
         Nodo<T>* borrar = lista;
         T dato = borrar->dato;
         lista = lista->sig;

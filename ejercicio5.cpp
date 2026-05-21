@@ -11,25 +11,30 @@ using namespace std;
 
 int main()
 {
-    int cantVertices;
-    int cantAristas;
-    cin >> cantVertices >> cantAristas;
-    Graph* grafo = new AdjacencyList(cantVertices,false,false);
-    for (int i = 1; i <= cantAristas; i++)
-    {
-        int verticeOrigen;
-        int verticeDestino;
-        cin >> verticeOrigen >> verticeDestino;
-        grafo->anadirArista(verticeOrigen,verticeDestino);
+    int V, A;
+    cin >> V >> A;
+    Graph* grafo = new AdjacencyList(V, false, false);
+    for (int i = 0; i < A; i++){
+        int u, v;
+        cin >> u >> v;
+        grafo->anadirArista(u, v);
     }
-    
-    bool retorno = BFS(grafo, 1);
+    int* color = new int[V + 1];
+    for (int i = 1; i <= V; i++){
+        color[i] = -1;
+    }
+    bool bipartito = true;
+    for (int i = 1; i <= V; i++){
+        if (color[i] == -1){
+            if (!BFS(grafo, i, color)){
+                bipartito = false;
+            }
+        }
+    }
+    if (bipartito) cout << "SI" << endl;
+    else cout << "NO" << endl;
 
-    if(retorno){
-        cout << "SI" << endl;
-    }
-    else{
-        cout << "NO" << endl;
-    }
+    delete[] color;
+
     return 0;
 }

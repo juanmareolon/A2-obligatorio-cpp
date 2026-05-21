@@ -6,15 +6,15 @@ class Queue
 {
 public:
     // pre: -
-    // post: the element is inserted at the end of the list
+    // post: Agrega el elemento al final de la cola.
     virtual void encolar(T element) = 0;
 
-    // pre: the index is valid (0 <= index < size)
-    // post: the element is inserted at the given index
+    // pre: La cola no es vacía.
+    // post: Elimina y retorna el elemento al frente de la cola.
     virtual T desencolar() = 0;
 
     // pre: -
-    // post: returns if the list is empty
+    // post: Retorna true si la cola está vacía, false en caso contrario.
     virtual bool esVacia() = 0;
 
     virtual ~Queue() {}
