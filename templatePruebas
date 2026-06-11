@@ -1,0 +1,17 @@
+--BORRAR ANTES DE ENTREGAR--
+ 
+g++ -std=c++11 -o ejemplo ejercicio1.cpp
+./ejemplo5 < ../A2-obligatorio-2026-S1-letra/tests/ejercicio5/arbol.in.txt > arbol.own.txt
+diff --strip-trailing-cr arbol.own.txt ../A2-obligatorio-2026-S1-letra/tests/ejercicio1/arbol.out.txt
+ 
+para probar todo de una
+for input in ../A2-obligatorio-2026-S1-letra/tests/ejercicio2/*.in.txt; do
+    expected="${input%.in.txt}.out.txt"
+    ./ejemplo < "$input" > /tmp/salida.txt
+ 
+    if diff --strip-trailing-cr /tmp/salida.txt "$expected" > /dev/null 2>&1; then
+        echo "OK: $input"
+    else
+        echo "FALLO: $input"
+    fi
+done
