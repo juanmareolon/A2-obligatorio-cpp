@@ -2,13 +2,7 @@
 #include <iostream>
 #include <limits>
 
-int maxFN (int a, int b){
-    return (a > b) ? a : b;
-}
-
 using namespace std;
-
-// Cada objeto tiene un peso, un volumen, un valor y una categoria (supervivencia o comida) 5 restricciones 
 
 struct Objeto{
     int peso;
@@ -16,7 +10,7 @@ struct Objeto{
     int costo;
     int valor;
     int categoria; // 0 es Supervivencia y 1 es Comida
-
+    
     Objeto(int _peso, int _volumen, int _costo, int _valor, int _categoria){
         peso = _peso;
         volumen = _volumen;
@@ -24,11 +18,37 @@ struct Objeto{
         valor = _valor;
         categoria = _categoria;
     }
-
+    
     Objeto(){}
 };
 
+struct nodoMatriz{
+    int valor;
+    int peso;
+    int cantObjetos;
+    
+    nodoMatriz(int _valor, int _peso, int _cantObjetos){
+        valor = _valor;
+        peso = _peso;
+        cantObjetos = _cantObjetos;
+    }
+    
+    nodoMatriz(){
+        valor = 0;
+        peso = 0;
+        cantObjetos = 0;
+    }
+};
 
+nodoMatriz mejorFN(nodoMatriz a, nodoMatriz b){
+    if (a.valor != b.valor)
+        return (a.valor > b.valor) ? a : b;
+
+    if (a.peso != b.peso)
+        return (a.peso < b.peso) ? a : b;
+
+    return (a.cantObjetos < b.cantObjetos) ? a : b;
+}
 
 int main(){
     int n;
@@ -37,13 +57,10 @@ int main(){
     int C;
     int S;
     int M;
-    int cantidadObjSup = 0;
-    int cantidadObjCom = 0;
     cin >> n >> P >> V >> C >> S >> M;
 
     Objeto* listaObj = new Objeto[n + 1];
 
-    
     for (int i = 1; i <= n; i++)
     {
         int vPeso, vVolumen, vCosto, vValor, vCategoria;
@@ -55,23 +72,22 @@ int main(){
         listaObj[i] = objInsert;
     }
     
-
-    int****** tab = new int*****[n + 1]();
+    nodoMatriz****** tab = new nodoMatriz*****[n + 1]();
     for (int i = 0; i <= n; i++)
     {
-        tab[i] = new int****[P + 1](); 
+        tab[i] = new nodoMatriz****[P + 1](); 
         for (int j = 0; j <= P; j++)
         {
-            tab[i][j] = new int***[V + 1]();
+            tab[i][j] = new nodoMatriz***[V + 1]();
             for (int k = 0; k <= V; k++)
             {
-                tab[i][j][k] = new int**[C + 1]();
+                tab[i][j][k] = new nodoMatriz**[C + 1]();
                 for (int l = 0; l <= C; l++)
                 {
-                    tab[i][j][k][l] = new int*[S + 1];
+                    tab[i][j][k][l] = new nodoMatriz*[S + 1]();
                     for (int m = 0; m <= S; m++)
                     {
-                        tab[i][j][k][l][m] = new int[M + 1]();
+                        tab[i][j][k][l][m] = new nodoMatriz[M + 1]();
                     }
                 }
             }
@@ -80,6 +96,13 @@ int main(){
     
     for (int i = 1; i <= n; i++)
     {
+        Objeto objetoConsiderar = listaObj[i];
+
+        int valorObj = objetoConsiderar.valor;
+        int pesoObj = objetoConsiderar.peso;
+        int volumenObj = objetoConsiderar.volumen;
+        int costoObj = objetoConsiderar.costo;
+        int categoriaObj = objetoConsiderar.categoria;
         for (int j = 0; j <= P; j++)
         {
             for (int k = 0; k <= V; k++)
@@ -90,57 +113,60 @@ int main(){
                     {
                         for (int o = 0; o <= M; o++)
                         {
-                            Objeto objetoConsiderar = listaObj[i];
-                            
-                            int categoriaConsiderar; 
-                            int cantidadTipoObjeto;
-                            
-                            int valorObj = objetoConsiderar.valor;
-                            int pesoObj = objetoConsiderar.peso;
-                            int volumenObj = objetoConsiderar.volumen;
-                            int costoObj = objetoConsiderar.costo;
-                            int categoriaObj = objetoConsiderar.categoria;
-                            
-                            int valorMochila;
-                            
-                            if(categoriaObj == 0){
-                                categoriaConsiderar = S;
-                                cantidadTipoObjeto = cantidadObjSup;
+                            nodoMatriz mejorCombinacion;
+                            nodoMatriz anterior;
+                            nodoMatriz usarObjeto;
+                            nodoMatriz noUsarObjeto;                
+                            noUsarObjeto = tab[i-1][j][k][l][m][o];
+
+                            if(pesoObj > j || volumenObj > k || costoObj > l || (categoriaObj == 0 && m == 0) || (categoriaObj == 1 && o == 0)){
+                                mejorCombinacion = noUsarObjeto;
                             }
                             else{
-                                categoriaConsiderar = M;
-                                cantidadTipoObjeto = cantidadObjCom;
-                            }
-                            
-                            if(pesoObj > P || volumenObj > V || costoObj > C || cantidadTipoObjeto > categoriaConsiderar){
-                                valorMochila = tab[i - 1][j][k][l][m][o];
-                            }
-                            else{
-                                int usarObjeto;
                                 if(categoriaObj == 0){
-                                    usarObjeto = valorObj + tab[i - 1][j - pesoObj][k - volumenObj][l - costoObj][m - 1][o]; 
+                                    anterior = tab[i - 1][j - pesoObj][k - volumenObj][l - costoObj][m - 1][o]; 
                                 }
                                 else{
-                                    usarObjeto = valorObj + tab[i - 1][j - pesoObj][k - volumenObj][l - costoObj][m][o - 1];
+                                    anterior = tab[i - 1][j - pesoObj][k - volumenObj][l - costoObj][m][o - 1];
                                 }
-
-                                int noUsarObjeto = tab[i -1][j][k][l][m][o];
-                                valorMochila = maxFN(usarObjeto,noUsarObjeto);
-                                if(valorMochila == usarObjeto && categoriaObj == 0){
-                                    cantidadObjSup++;
-                                }
-                                else if(valorMochila == usarObjeto && categoriaObj == 1){
-                                    cantidadObjCom++;
-                                }
+                                usarObjeto.valor = anterior.valor + valorObj;
+                                usarObjeto.peso = anterior.peso + pesoObj;
+                                usarObjeto.cantObjetos = anterior.cantObjetos + 1;
+                                mejorCombinacion = mejorFN(usarObjeto, noUsarObjeto);
                             }
-                            tab[i][j][k][l][m][o] = valorMochila;
+                            tab[i][j][k][l][m][o] = mejorCombinacion;
                         }
                     }   
                 }
             }
         }
     }
-    
-    int valorMax = tab[n][P][V][C][S][M];
+    nodoMatriz mejor = tab[n][P][V][C][S][M];
+    int valorMax = mejor.valor;
+    int pesoMin = mejor.peso;
+    int cantidadObjMin = mejor.cantObjetos;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j <= P; j++)
+        {
+            for (int k = 0; k <= V; k++)
+            {
+                for (int l = 0; l <= C; l++)
+                {
+                    for (int m = 0; m <= S; m++)
+                    {
+                        delete[] tab[i][j][k][l][m];
+                    }
+                    delete[] tab[i][j][k][l];
+                }
+                delete[] tab[i][j][k];
+            }
+            delete[] tab[i][j];
+        }
+        delete[] tab[i];
+    }
+    delete[] tab;
+    cout << valorMax << " " << pesoMin << " " << cantidadObjMin << endl;
     return 0;
 }
