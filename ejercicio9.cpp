@@ -40,14 +40,14 @@ struct nodoMatriz{
     }
 };
 
-nodoMatriz mejorFN(nodoMatriz a, nodoMatriz b){
-    if (a.valor != b.valor)
-        return (a.valor > b.valor) ? a : b;
+nodoMatriz mejorFN(nodoMatriz opcionUsar, nodoMatriz opcionNoUsar){
+    if (opcionUsar.valor != opcionNoUsar.valor)
+        return (opcionUsar.valor > opcionNoUsar.valor) ? opcionUsar : opcionNoUsar;
 
-    if (a.peso != b.peso)
-        return (a.peso < b.peso) ? a : b;
+    if (opcionUsar.peso != opcionNoUsar.peso)
+        return (opcionUsar.peso < opcionNoUsar.peso) ? opcionUsar : opcionNoUsar;
 
-    return (a.cantObjetos < b.cantObjetos) ? a : b;
+    return (opcionUsar.cantObjetos < opcionNoUsar.cantObjetos) ? opcionUsar : opcionNoUsar;
 }
 
 int main(){
