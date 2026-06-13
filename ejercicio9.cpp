@@ -27,12 +27,6 @@ struct nodoMatriz{
     int peso;
     int cantObjetos;
     
-    nodoMatriz(int _valor, int _peso, int _cantObjetos){
-        valor = _valor;
-        peso = _peso;
-        cantObjetos = _cantObjetos;
-    }
-    
     nodoMatriz(){
         valor = 0;
         peso = 0;
