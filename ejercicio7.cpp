@@ -57,18 +57,18 @@ int main() {
     int L;
     cin >> L;
     Competidor* competidores = new Competidor[L];
-    for(int i = 1; i <=L; i++){
-        competidores[i].indice = i;
+    for(int i = 0; i <L; i++){
+        competidores[i].indice = i + 1;
         competidores[i].tiempoTotal = 0;
     }
     // Natación
-    for (int i = 1; i <= L; i++) {
+    for (int i = 0; i < L; i++) {
         int tiempoN;
         cin >> tiempoN;
         competidores[i].tiempoTotal += tiempoN;
     }
     // Ciclismo
-    for (int i = 1; i <= L; i++) {
+    for (int i = 0; i < L; i++) {
         int tiempoCi;
         cin >> tiempoCi;
         competidores[i].tiempoTotal += tiempoCi;
