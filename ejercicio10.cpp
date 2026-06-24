@@ -7,7 +7,7 @@ using namespace std;
 
 // todas las cartas deben ser utilizadas exactamente una vez.
 
-bool esSolucion(int valorActual, int ValorObjetivo){
+bool esSolucion(int valorActual, int valorObjetivo){
     return valorActual == valorObjetivo; 
 }
 
