@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include <cmath>
+#include "mergeSort.h"
 
 using namespace std;
 float INF = numeric_limits<float>::max();
@@ -41,69 +42,14 @@ float minEntreTres(Punto a, Punto b, Punto c)
     return d3;
 }
 
-void merge(Punto *puntos, int inicio, int medio, int fin, bool porY)
+bool compararPorX(const Punto& a, const Punto& b)
 {
-    int tamano = fin - inicio + 1;
-    Punto *aux = new Punto[tamano];
-    int i = inicio;
-    int j = medio + 1;
-    int k = 0;
-    while (i <= medio && j <= fin)
-    {
-        if (porY)
-        {
-            if (puntos[i].y <= puntos[j].y)
-            {
-                aux[k] = puntos[i];
-                i++;
-            }
-            else
-            {
-                aux[k] = puntos[j];
-                j++;
-            }
-        }
-        else
-        {
-            if (puntos[i].x <= puntos[j].x)
-            {
-                aux[k] = puntos[i];
-                i++;
-            }
-            else
-            {
-                aux[k] = puntos[j];
-                j++;
-            }
-        }
-        k++;
-    }
-    while (i <= medio)
-    {
-        aux[k] = puntos[i];
-        i++;
-        k++;
-    }
-    while (j <= fin)
-    {
-        aux[k] = puntos[j];
-        j++;
-        k++;
-    }
-    for (int x = 0; x < tamano; x++)
-    {
-        puntos[inicio + x] = aux[x];
-    }
-    delete[] aux;
+    return a.x <= b.x;
 }
 
-void mergeSortPuntos(Punto *puntos, int inicio, int fin, bool porY)
+bool compararPorY(const Punto& a, const Punto& b)
 {
-    if (inicio >= fin) return;
-    int medio = (inicio + fin) / 2;
-    mergeSortPuntos(puntos, inicio, medio, porY);
-    mergeSortPuntos(puntos, medio + 1, fin, porY);
-    merge(puntos, inicio, medio, fin, porY);
+    return a.y <= b.y;
 }
 
 float min(float a, float b)
@@ -114,7 +60,7 @@ float min(float a, float b)
 float minimoFranja(Punto *conjuntoPuntos, int inicio, int fin, float d)
 {
     int N = fin - inicio + 1;
-    mergeSortPuntos(conjuntoPuntos, 0, N - 1, true);
+    mergeSort(conjuntoPuntos, 0, N - 1, compararPorY);
 
     for (int i = 0 ; i < N; i++)
     {
@@ -186,7 +132,7 @@ int main()
         conjuntoPuntos[i] = pn;
     }
 
-    mergeSortPuntos(conjuntoPuntos, 0, N - 1, false);
+    mergeSort(conjuntoPuntos, 0, N - 1, compararPorX);
     float minimaDist = DAC_p(conjuntoPuntos, 0, N - 1);
     delete[] conjuntoPuntos;
     cout << ((minimaDist <= D) ? "true" : "false") << endl;

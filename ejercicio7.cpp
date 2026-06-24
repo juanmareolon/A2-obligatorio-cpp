@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <limits>
+#include "mergeSort.h"
 
 using namespace std;
 
@@ -10,47 +11,9 @@ struct Competidor {
     int indice;
 };
 
-void merge(Competidor competidores[], int inicio, int medio, int fin) {
-    int tamano = fin - inicio + 1;
-    Competidor* aux = new Competidor[tamano];
-    int i = inicio;
-    int j = medio + 1;
-    int k = 0;
-    while (i <= medio && j <= fin) {
-        // Mantiene el orden original en caso de empate
-        if (competidores[i].tiempoTotal <= competidores[j].tiempoTotal) {
-            aux[k] = competidores[i];
-            i++;
-        } else {
-            aux[k] = competidores[j];
-            j++;
-        }
-        k++;
-    }
-    while (i <= medio) {
-        aux[k] = competidores[i];
-        i++;
-        k++;
-    }
-    while (j <= fin) {
-        aux[k] = competidores[j];
-        j++;
-        k++;
-    }
-    for (int x = 0; x < tamano; x++) {
-        competidores[inicio + x] = aux[x];
-    }
-    delete[] aux;
-}
-
-void mergeSort(Competidor competidores[], int inicio, int fin) {
-    if (inicio >= fin) {
-        return;
-    }
-    int medio = (inicio + fin) / 2;
-    mergeSort(competidores, inicio, medio);
-    mergeSort(competidores, medio + 1, fin);
-    merge(competidores, inicio, medio, fin);
+bool compararCompetidores(const Competidor& a, const Competidor& b)
+{
+    return a.tiempoTotal <= b.tiempoTotal;
 }
 
 int main() {
@@ -80,7 +43,7 @@ int main() {
         cin >> tiempoCa;
         competidores[i].tiempoTotal += tiempoCa;
     }
-    mergeSort(competidores, 0, L - 1);
+    mergeSort(competidores, 0, L - 1, compararCompetidores);
     for (int i = 0; i < L; i++) {
         cout << competidores[i].indice << endl;
     }
