@@ -42,12 +42,12 @@ float minEntreTres(Punto a, Punto b, Punto c)
     return d3;
 }
 
-bool compararPorX(const Punto& a, const Punto& b)
+bool compararPorX(Punto a, Punto b)
 {
     return a.x <= b.x;
 }
 
-bool compararPorY(const Punto& a, const Punto& b)
+bool compararPorY(Punto a, Punto b)
 {
     return a.y <= b.y;
 }

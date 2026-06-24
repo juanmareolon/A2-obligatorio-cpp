@@ -11,7 +11,7 @@ struct Competidor {
     int indice;
 };
 
-bool compararCompetidores(const Competidor& a, const Competidor& b)
+bool compararCompetidores(Competidor a, Competidor b)
 {
     return a.tiempoTotal <= b.tiempoTotal;
 }
