@@ -6,47 +6,62 @@
 
 using namespace std;
 
-struct Competidor {
-    long long tiempoTotal;
+struct Competidor
+{
     int indice;
+    int T;
+    Competidor(){
+        indice=0;
+        T=0;
+    };
 };
 
 bool compararCompetidores(Competidor a, Competidor b)
 {
-    return a.tiempoTotal <= b.tiempoTotal;
+    return a.T <= b.T;
 }
 
 int main() {
     int L;
     cin >> L;
-    Competidor* competidores = new Competidor[L];
-    for(int i = 0; i <L; i++){
-        competidores[i].indice = i + 1;
-        competidores[i].tiempoTotal = 0;
-    }
-    // Natación
-    for (int i = 0; i < L; i++) {
-        int tiempoN;
-        cin >> tiempoN;
-        competidores[i].tiempoTotal += tiempoN;
-    }
-    // Ciclismo
-    for (int i = 0; i < L; i++) {
-        int tiempoCi;
-        cin >> tiempoCi;
-        competidores[i].tiempoTotal += tiempoCi;
 
+    Competidor* competidores = new Competidor[L+1];
+    for(int i = 1; i<=L; i++)
+    {
+        Competidor competidor = Competidor();
+        competidor.indice = i;
+        competidores[i] = competidor;
     }
+
+    // Natación
+    for (int i = 1; i <= L; i++)
+    {
+        int N;
+        cin >> N;
+        competidores[i].T += N; 
+    }
+
+    // Ciclismo
+    for (int i = 1; i <= L; i++)
+    {
+        int B;
+        cin >> B;
+        competidores[i].T += B; 
+    }
+
     // Carrera
-    for (int i = 0; i < L; i++) {
-        int tiempoCa;
-        cin >> tiempoCa;
-        competidores[i].tiempoTotal += tiempoCa;
+    for (int i = 1; i <= L; i++)
+    {
+        int C;
+        cin >> C;
+        competidores[i].T += C; 
     }
-    mergeSort(competidores, 0, L - 1, compararCompetidores);
-    for (int i = 0; i < L; i++) {
+
+    mergeSort(competidores, 1, L, compararCompetidores);
+    for (int i = 1; i <= L; i++) {
         cout << competidores[i].indice << endl;
     }
     delete[] competidores;
+
     return 0;
 }
